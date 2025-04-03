@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: API Gateway connected to Lambda functions
+
+Resources:
+  ApiAuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/api/lambda/api-auth/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      Policies: AWSLambdaBasicExecutionRole
+      Events:
+        Auth:
+          Type: Api
+          Properties:
+            Path: /auth
+            Method: GET
+  CloudfrontAuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/api/lambda/cloudfront-auth/
+      Handler: index.handler
+      Runtime: nodejs16.x
+      Policies: AWSLambdaBasicExecutionRole
+      Events:
+        CloudfrontAuth:
+          Type: Api
+          Properties:
+            Path: /cloudfront-auth
+            Method: GET
+  DeleteItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/api/lambda/delete_item/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      Policies: AWSLambdaBasicExecutionRole
+      Events:
+        DeleteItem:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: DELETE
+  GetItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/api/lambda/get_item/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      Policies: AWSLambdaBasicExecutionRole
+      Events:
+        GetItem:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: GET
+  GetItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/api/lambda/get_items/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      Policies: AWSLambdaBasicExecutionRole
+      Events:
+        GetItems:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: GET
+  PostItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/api/lambda/post_item/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      Policies: AWSLambdaBasicExecutionRole
+      Events:
+        PostItem:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: POST
